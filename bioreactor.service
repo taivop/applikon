@@ -5,9 +5,11 @@ Wants=network-online.target
 
 [Service]
 WorkingDirectory=/home/pi/bioreactor
+User=pi
 Restart=always
+RestartSec=10s
 Type=simple
-ExecStart=python3 poll.py
+ExecStart=/usr/bin/python3 poll.py
 
 [Install]
 WantedBy=multi-user.target
