@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+import time
 
 import websockets
 from dotenv import load_dotenv
@@ -14,13 +15,15 @@ load_dotenv()  # Take environment variables from .env. See .env.example.
 
 # Setup logging
 LOGLEVEL = os.environ.get("LOGLEVEL", "INFO").upper()
-logging.basicConfig(level=LOGLEVEL)
+logging.basicConfig(level=LOGLEVEL, format="[%(asctime)-15s] %(message)s")
 logger = logging.getLogger("poll")
 
 INFLUXDB_TOKEN = os.environ["INFLUXDB_TOKEN"]
 INFLUXDB_URL = os.environ["INFLUXDB_URL"]
 INFLUXDB_ORG = os.environ["INFLUXDB_ORG"]
 INFLUXDB_BUCKET = os.environ["INFLUXDB_BUCKET"]
+
+SAMPLING_INTERVAL_SEC = os.environ.get("SAMPLING_INTERVAL_SEC", 30)
 
 client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN)
 write_api = client.write_api(write_options=SYNCHRONOUS)
@@ -51,8 +54,15 @@ async def poll_once(host):
 
 
 async def main():
-    for host in hosts:
-        await poll_once(host)
+    logger.info("Starting sampling loop with %d-second interval", SAMPLING_INTERVAL_SEC)
+
+    while True:
+        # poll all reactors
+        for host in hosts:
+            await poll_once(host)
+
+        # sleep for desired interval
+        await asyncio.sleep(SAMPLING_INTERVAL_SEC)
 
 
 if __name__ == "__main__":
