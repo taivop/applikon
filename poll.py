@@ -23,7 +23,7 @@ INFLUXDB_URL = os.environ["INFLUXDB_URL"]
 INFLUXDB_ORG = os.environ["INFLUXDB_ORG"]
 INFLUXDB_BUCKET = os.environ["INFLUXDB_BUCKET"]
 
-SAMPLING_INTERVAL_SEC = os.environ.get("SAMPLING_INTERVAL_SEC", 30)
+SAMPLING_INTERVAL_SEC = os.environ.get("SAMPLING_INTERVAL_SEC", 10)
 
 client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN)
 write_api = client.write_api(write_options=SYNCHRONOUS)
