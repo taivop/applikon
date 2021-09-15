@@ -2,7 +2,7 @@ import re
 
 re_message = re.compile(r"J1\.15\.(\d+)A(.*)")
 
-sensor_map = {0: "pH", 1: "do2", 2: "temperature", 5: "o2", 6: "co2", 13: "stirrer"}
+sensor_map = {0: "pH", 2: "temperature", 5: "o2", 6: "co2", 13: "stirrer", 34: "do2"}
 
 type_map = {13: int}
 
