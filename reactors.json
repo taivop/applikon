@@ -3,17 +3,17 @@
         {
             "id":0,
             "address":"192.168.1.241",
-            "name":"blue"
+            "name":"red"
         },
         {
             "id":1,
             "address":"192.168.1.242",
-            "name":"red"
+            "name":"purple"
         },
         {
             "id":2,
             "address":"192.168.1.243",
-            "name":"purple"
+            "name":"blue"
         }
     ]
 }
