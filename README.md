@@ -18,18 +18,16 @@ cp .env.example .env
 And then update the secret keys within `.env` file.
 
 ### Configuration
-* Available bioreactors, their names and IP addresses can be configured in reactors.json.
+* Available bioreactors, their names and IP addresses can be configured in `reactors.json`.
 * The environment can be configured in `.env`.
 
 ### Starting manually
-
-To run the program, do
 
 ```
 python3 poll.py
 ```
 
-### Starting automatically on launch
+### Starting automatically on boot
 
 To setup the systemd daemon, do
 
