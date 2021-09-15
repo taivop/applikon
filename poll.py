@@ -37,20 +37,27 @@ async def poll_once(host):
     uri = f"ws://{host['address']}"
     logger.info("Connecting to reactor '%s' at '%s'", host["name"], uri)
 
-    async with websockets.connect(uri) as websocket:
-        # Ask for all sensor values
-        await websocket.send("J1.15S\r")
-        message = await websocket.recv()
-        sensor_data = parse_sensor_data(message.decode("utf-8"))
-        logger.info("Reactor '%s' readings: %s", host["name"], sensor_data)
+    try:
+        async with websockets.connect(uri) as websocket:
+            # Ask for all sensor values
+            await websocket.send("J1.15S\r")
+            message = await websocket.recv()
+            sensor_data = parse_sensor_data(message.decode("utf-8"))
+            logger.info("Reactor '%s' readings: %s", host["name"], sensor_data)
 
-        # Assemble message for InfluxDB
-        sequence = []
-        for field in sensor_data:
-            sequence.append(f"{field},host={uri} {field}={sensor_data[field]}")
+            # Assemble message for InfluxDB
+            sequence = []
+            for field in sensor_data:
+                sequence.append(
+                    f'{field},host={uri},reactor_name={host["name"]} {field}={sensor_data[field]}'
+                )
 
-        write_api.write(INFLUXDB_BUCKET, INFLUXDB_ORG, sequence)
-        logger.info("Saved sample for reactor '%s' at '%s'", host["name"], uri)
+            write_api.write(INFLUXDB_BUCKET, INFLUXDB_ORG, sequence)
+            logger.info("Saved sample for reactor '%s' at '%s'", host["name"], uri)
+    except Exception as ex:
+        logger.error(ex)
+        message = f'error,host={uri},reactor_name={host["name"]} error_class="{ex.__class__.__name__}"'
+        write_api.write(INFLUXDB_BUCKET, INFLUXDB_ORG, message)
 
 
 async def main():
