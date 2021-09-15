@@ -1,19 +1,21 @@
 import asyncio
+import os
 
 import websockets
+from dotenv import load_dotenv
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 from parse_data import parse_sensor_data
 
-# You can generate a Token from the "Tokens Tab" in the UI
-token = "jqWknvpNYX1jdkBDFlFhvZfObI6oyHkQXcPow0aMoW84hOyI5vl7gsBQ1b0kXEZEvwovoDJa24baQJczYTou-A=="
-org = "sq42na@gmail.com"
-bucket = "sq42na's Bucket"
+load_dotenv()  # Take environment variables from .env. See .env.example.
 
-client = InfluxDBClient(
-    url="https://eu-central-1-1.aws.cloud2.influxdata.com", token=token
-)
+INFLUXDB_TOKEN = os.environ("INFLUXDB_TOKEN")
+INFLUXDB_URL = os.environ("INFLUXDB_URL")
+INFLUXDB_ORG = os.environ("INFLUXDB_ORG")
+INFLUXDB_BUCKET = os.environ("INFLUXDB_BUCKET")
+
+client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN)
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
 
