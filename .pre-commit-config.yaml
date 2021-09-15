@@ -2,12 +2,12 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 -   repo: https://github.com/psf/black
-    rev: stable
+    rev: 21.9b0
     hooks:
     -   id: black
         language_version: python3.9
 -   repo: https://github.com/pre-commit/mirrors-isort
-    rev: ''  # Use the revision sha / tag you want to point at
+    rev: v5.9.3  # Use the revision sha / tag you want to point at
     hooks:
     -   id: isort
         args: ["--profile", "black"]
