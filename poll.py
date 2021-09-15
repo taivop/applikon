@@ -50,6 +50,10 @@ async def poll_once(host):
         logger.info("Saved sample for reactor '%s' at '%s'", host["name"], uri)
 
 
-if __name__ == "__main__":
+async def main():
     for host in hosts:
-        asyncio.run(poll_once(host))
+        await poll_once(host)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
