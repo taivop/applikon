@@ -4,6 +4,7 @@ After=network.target
 Wants=network-online.target
 
 [Service]
+WorkingDirectory=/home/pi/bioreactor
 Restart=always
 Type=simple
 ExecStart=python3 poll.py

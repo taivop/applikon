@@ -32,15 +32,21 @@ python3 poll.py
 To setup the systemd daemon, do
 
 ```
-# Link the file so git repo updates get applied.
-sudo ln -s bioreactor.service /lib/systemd/system/bioreactor.service
-
 sudo chmod 644 bioreactor.service
+
+# Link the file so git repo updates get applied.
+sudo systemctl link /home/pi/bioreactor/bioreactor.service
 
 sudo systemctl daemon-reload
 
 sudo systemctl enable bioreactor.service
 sudo systemctl start bioreactor.service
+```
+
+
+Then, to view daemon logs (e.g. for debugging):
+```
+journalctl -u bioreactor.service
 ```
 
 ### Development
